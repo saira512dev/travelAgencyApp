@@ -1,11 +1,20 @@
 import { loginWithGoogle } from "@/appwrite/auth";
+import { account } from "@/appwrite/client";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import React from "react";
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 
-type Props = {};
+export async function clientLoader() {
+  try {
+    const user = await account.get();
 
-const SignIn = (props: Props) => {
+    if (user.$id) return redirect("/");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const SignIn = () => {
   return (
     <main className="auth">
       <section className="size-full glassmorphism flex-center px-6">

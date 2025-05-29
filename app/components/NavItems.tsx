@@ -1,17 +1,19 @@
+import { logoutUser } from "@/appwrite/auth";
 import { sidebarItems } from "@/constants";
 import { cn } from "@/lib/utils";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLoaderData, useNavigate } from "react-router";
 
 type Props = {
   handleClick?: (value: handleClick) => void;
 };
 
 const NavItems = ({ handleClick }: Props) => {
-  const user = {
-    name: "Saira",
-    email: "sairaabdullapa@gmail.com",
-    image:
-      "https://www.google.com/imgres?imgurl=https://images.pexels.com/photos/18549580/pexels-photo-18549580/free-photo-of-woman-in-headscarf-reading-book-by-tree.jpeg?auto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&imgrefurl=https://www.pexels.com/search/hijab%2520back/&h=750&w=500&tbnid=Xmu0EIwI5BeDZM&source=sa.im&tbnh=678&tbnw=452&usg=AI4_-kSjYu7G2gwA-SCw-J1z-FL77paZRg&vet=1&docid=-EHHFSggaNF-pM",
+  const user = useLoaderData();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logoutUser();
+    navigate("/sign-in");
   };
 
   return (
@@ -44,17 +46,16 @@ const NavItems = ({ handleClick }: Props) => {
           ))}
         </nav>
         <footer className="nav-footer">
-          <img src="./assets/images/profile.jpg" alt="user-image" />
+          <img
+            src={user?.imageUrl}
+            alt="user-image"
+            referrerPolicy="no-referrer"
+          />
           <article>
             <h2>{user?.name}</h2>
             <p>{user?.email}</p>
           </article>
-          <button
-            onClick={() => {
-              console.log("logout");
-            }}
-            className="cursor-pointer"
-          >
+          <button onClick={handleLogout} className="cursor-pointer">
             <img
               src="/assets/icons/logout.svg"
               alt="logout"

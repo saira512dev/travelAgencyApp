@@ -1,5 +1,7 @@
+import { getUser } from "@/appwrite/auth";
 import { NavItems, StatsCard, TripCard } from "@/components";
 import Header from "@/components/Header";
+import type { Route } from "./types/dashboard";
 
 type Props = {};
 
@@ -42,11 +44,10 @@ const allTrips = [
   },
 ];
 
-const Dashboard = (props: Props) => {
-  const user = {
-    name: "Saira",
-  };
+export const clientLoader = async () => await getUser();
 
+const Dashboard = ({ loaderData }: Route.ComponentProps) => {
+  const user = (loaderData as User) || null;
   const dashboardStats = {
     totalUsers: 12450,
     usersJoined: { currentMonth: 218, lastMonth: 176 },
