@@ -21,7 +21,7 @@ const MobileSidebar = () => {
           <h1>Tourvisto</h1>
         </Link>
         <button onClick={toggleSidebar}>
-          <img src="./assets/icons/menu.svg" alt="menu" className="size-7" />
+          <img src="/assets/icons/menu.svg" alt="menu" className="size-7" />
         </button>
       </header>
       <SidebarComponent

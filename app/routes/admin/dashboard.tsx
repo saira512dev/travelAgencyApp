@@ -1,7 +1,7 @@
 import { getUser } from "@/appwrite/auth";
 import { NavItems, StatsCard, TripCard } from "@/components";
 import Header from "@/components/Header";
-import type { Route } from "./types/dashboard";
+import type { Route } from "./+types/dashboard";
 
 type Props = {};
 
