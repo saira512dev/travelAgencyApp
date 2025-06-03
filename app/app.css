@@ -389,6 +389,13 @@
 }
 
 @layer utilities {
+  .formWrapper {
+    @apply w-full max-w-[600px] mx-auto px-4 lg:px-8;
+  }
+  
+  .formWrapper-md {
+    @apply w-full max-w-[600px] px-4 lg:px-8 mx-auto; /* Changed from max-w-3xl to max-w-5xl */
+  }
   .wrapper {
     @apply w-full max-w-7xl mx-auto px-4 lg:px-8;
   }

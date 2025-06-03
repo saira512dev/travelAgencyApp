@@ -92,8 +92,7 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
       console.log("AFTER REQUESTING", result);
 
       if (result?.id) {
-        console.log("RSULT", result);
-        // navigate("trips/${result.id");
+        navigate(`/trips/${result.id}`);
       } else console.log("Failed to generate the trip");
     } catch (err) {
       console.log("ERROR:", err);
@@ -119,12 +118,12 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
   ];
 
   return (
-    <main className="flex flex-col gap-10 pb-20 wrapper">
+    <main className="flex flex-col gap-10 pb-20 wrapper ">
       <Header
         title="Add a New Trip"
         description="View and edit AI Generated travel plans"
       />
-      <section className="mt-2.5 wrapper-md">
+      <section className="mt-2.5 wrapper">
         <form className="trip-form" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="country">Country</label>
@@ -212,7 +211,7 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
               </LayersDirective>
             </MapsComponent>
           </div>
-          <div className="bg-gray-200 h-px w-full">
+          <div className="bg-gray-200 h-px !w-full">
             {error && (
               <div className="error">
                 <p>{error}</p>

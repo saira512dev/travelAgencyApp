@@ -31,7 +31,7 @@ const AdminLayout = () => {
           <NavItems />
         </SidebarComponent>
       </aside>
-      <aside>
+      <aside className="h-full">
         <Outlet />
       </aside>
     </div>

@@ -4,23 +4,22 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ID } from "appwrite";
 import { ActionFunctionArgs, data } from "react-router";
 
-export const action = async({request}: ActionFunctionArgs) => {
-    const {
-        country,
-        numberOfDays,
-        travelStyle,
-        interests,
-        budget,
-        groupType,
-        userId,
-    }
- = await request.json();
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const {
+    country,
+    numberOfDays,
+    travelStyle,
+    interests,
+    budget,
+    groupType,
+    userId,
+  } = await request.json();
 
- const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
- const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY!
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY!;
 
- try {
-const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
+  try {
+    const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
     Budget: '${budget}'
     Interests: '${interests}'
     TravelStyle: '${travelStyle}'
@@ -67,28 +66,33 @@ const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} b
     ]
     }`;
 
-    const textResult = await genAI.getGenerativeModel({model: 'gemini-2.0-flash'}).generateContent([prompt])
-    const trip = parseMarkdownToJson(textResult.response.text())
+    const textResult = await genAI
+      .getGenerativeModel({ model: "gemini-2.0-flash" })
+      .generateContent([prompt]);
+    const trip = parseMarkdownToJson(textResult.response.text());
 
-    const imageResponse = await fetch(`https://api.unsplash.com/search/photos?query=${country}${interests}${travelStyle}&client_id=${unsplashApiKey}`)
-console.log("DATE",new Date().toISOString(), Date.now())
-    const imageUrl = (await imageResponse.json()).results.slice(0,3).
-    map((result: any) => result.urls?.regular || null)
+    const imageResponse = await fetch(
+      `https://api.unsplash.com/search/photos?query=${country}${interests}${travelStyle}&client_id=${unsplashApiKey}`
+    );
+    console.log("DATE", new Date().toISOString(), Date.now());
+    const imageUrl = (await imageResponse.json()).results
+      .slice(0, 3)
+      .map((result: any) => result.urls?.regular || null);
 
     const result = await database.createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.tripCollectionId,
-        ID.unique(),
-        {
-            tripDetail: JSON.stringify(trip),
-            imageUrl,
-            createdAt: new Date().toISOString(),
-            userId
-        }
-    )
-console.log("AI")
-    return data({id: result.$id})
- } catch (err) {
-    console.log("Error generating travel plan", err)
- }
-}
+      appwriteConfig.databaseId,
+      appwriteConfig.tripCollectionId,
+      ID.unique(),
+      {
+        tripDetail: JSON.stringify(trip),
+        imageUrl,
+        createdAt: new Date().toISOString(),
+        userId,
+      }
+    );
+    console.log("AI");
+    return data({ id: result.$id });
+  } catch (err) {
+    console.log("Error generating travel plan", err);
+  }
+};
